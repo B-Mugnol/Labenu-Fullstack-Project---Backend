@@ -1,11 +1,14 @@
 // External libraries
 import knex from "knex"
 import Knex from "knex"
+import dotenv from "dotenv"
 
+// Dotenv configuration
+dotenv.config()
 
 export abstract class BaseDatabase {
 
-    protected static connection: Knex | null = null
+    protected static _connection: Knex | null = null
 
     protected tableNames = {
         images: "Images_LFSP",
@@ -15,8 +18,8 @@ export abstract class BaseDatabase {
     }
 
     protected get connection(): Knex {
-        if (!BaseDatabase.connection) {
-            BaseDatabase.connection = knex({
+        if (!BaseDatabase._connection) {
+            BaseDatabase._connection = knex({
                 client: "mysql",
                 connection: {
                     host: process.env.DB_HOST,
@@ -28,14 +31,14 @@ export abstract class BaseDatabase {
                 },
             })
         }
-
-        return BaseDatabase.connection;
+        
+        return BaseDatabase._connection
     }
 
     public static async destroyConnection(): Promise<void> {
-        if (BaseDatabase.connection) {
-            await BaseDatabase.connection.destroy()
-            BaseDatabase.connection = null
+        if (BaseDatabase._connection) {
+            await BaseDatabase._connection.destroy()
+            BaseDatabase._connection = null
         }
     }
 }
