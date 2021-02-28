@@ -5,7 +5,7 @@ import Knex from "knex"
 
 export abstract class BaseDatabase {
 
-    private static connection: Knex | null = null;
+    protected static connection: Knex | null = null
 
     protected tableNames = {
         images: "Images_LFSP",
