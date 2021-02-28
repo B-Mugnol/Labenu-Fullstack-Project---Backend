@@ -1,6 +1,5 @@
 // External Libraries
 import cors from "cors"
-import dotenv from "dotenv"
 import express from "express"
 import { AddressInfo } from "net"
 
@@ -10,7 +9,6 @@ import { AddressInfo } from "net"
 
 
 // Application setup
-dotenv.config()
 const app = express()
 
 app.use(express.json())
