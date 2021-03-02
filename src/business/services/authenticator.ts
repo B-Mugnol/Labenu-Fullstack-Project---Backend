@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken"
 
 
 // Interface
-import { AuthenticationData } from '../entities/interfaces/AuthenticationData'
+import { AuthenticationData } from '../entities/AuthenticationData'
 
 
 export class Token {
