@@ -3,7 +3,7 @@ import * as bcrypt from "bcryptjs"
 
 
 // Encryption functions
-export class Hash {
+export class HashManager {
     public generate = async (plainText: string): Promise<string> => {
         const salt: string = await bcrypt.genSalt(Number(process.env.BCRYPT_COST))
 
