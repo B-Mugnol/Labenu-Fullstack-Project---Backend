@@ -11,7 +11,7 @@ class Setup extends BaseDatabase {
                     nickname VARCHAR(255) NOT NULL UNIQUE,
                     email VARCHAR(255) NOT NULL UNIQUE,
                     password VARCHAR(255) NOT NULL,
-                    avatar VARCHAR(2083) NOT NULL
+                    avatar TEXT NOT NULL
                 );
                 
                 
@@ -19,7 +19,7 @@ class Setup extends BaseDatabase {
                     id VARCHAR(255) PRIMARY KEY,   
                     subtitle TEXT NOT NULL,
                     creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    file_path VARCHAR(2083),
+                    file_path TEXT,
                     file BLOB,
                     collection VARCHAR(255) NOT NULL,
                     author_id VARCHAR(255) NOT NULL,
