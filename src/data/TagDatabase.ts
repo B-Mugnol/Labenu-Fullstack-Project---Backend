@@ -13,7 +13,7 @@ export class TagDatabase extends BaseDatabase {
         tag
     }: TagDTO): Promise<TagDTO> => {
         try {
-            const databaseTag: TagDTO | undefined = await this.getTag(tag)
+            const databaseTag: TagDTO | undefined = await this.getByTag(tag)
 
             // If tag already exists, return it. Else insert tag into DB
             if (databaseTag) {
