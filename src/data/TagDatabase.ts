@@ -39,7 +39,7 @@ export class TagDatabase extends BaseDatabase {
     }
 
 
-    public getTag = async (tag: string): Promise<TagDTO> => {
+    public getByTag = async (tag: string): Promise<TagDTO> => {
         try {
             const result: any = this.connection.raw(`
                 SELECT * FROM ${this.tableNames.tags}
@@ -49,7 +49,7 @@ export class TagDatabase extends BaseDatabase {
             `)
 
             return result[0]
-            
+
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
         }
