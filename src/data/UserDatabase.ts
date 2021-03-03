@@ -34,4 +34,21 @@ export class UserDatabase extends BaseDatabase {
         }
     }
 
+
+    public getByEmail = async (email: string): Promise<UserDTO | undefined> => {
+        try {
+            const result: any = this.connection.raw(`
+                SELECT * FROM ${this.table}
+                WHERE
+                    email = ${email}
+                ;
+            `)
+
+            return result[0]
+
+        } catch (error) {
+            throw new Error(error.sqlMessage || error.message)
+        }
+    }
+
 }
