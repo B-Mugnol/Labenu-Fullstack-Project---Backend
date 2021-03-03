@@ -3,7 +3,7 @@ import { BaseDatabase } from "./BaseDatabase"
 
 
 // Entities
-import { UserDTO } from "../business/entities/UserInterfaces"
+import { UserDTO } from "../business/entities/userInterfaces"
 
 
 export class UserDatabase extends BaseDatabase {

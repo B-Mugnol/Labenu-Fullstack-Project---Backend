@@ -7,7 +7,7 @@ import { UserBusiness } from "../business/UserBusiness"
 
 
 // Model and Entities
-import { UserInput } from "../business/entities/UserInterfaces"
+import { UserInput } from "../business/entities/userInterfaces"
 import { UserModel } from "../model/UserModel"
 import { Verify } from "../business/services/verify"
 

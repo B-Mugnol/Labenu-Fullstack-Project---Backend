@@ -3,7 +3,7 @@ import { Verify } from "../business/services/verify"
 
 
 // Entities
-import { UserDTO, UserInput } from "../business/entities/UserInterfaces"
+import { UserDTO, UserInput } from "../business/entities/userInterfaces"
 
 
 export class UserModel {

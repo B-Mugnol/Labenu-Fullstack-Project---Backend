@@ -11,7 +11,7 @@ import { Verify } from "./services/verify"
 
 // Models and Entities
 import { UserModel } from "../model/UserModel"
-import { UserInput } from "./entities/UserInterfaces"
+import { UserInput } from "./entities/userInterfaces"
 import { AccessData } from "./entities/authorization"
 
 export class UserBusiness {
