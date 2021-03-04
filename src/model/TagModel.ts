@@ -2,10 +2,7 @@
 import { Verify } from "../business/services/verify"
 
 
-
-
 // Entities
-import { ImageInput } from "../business/entities/couplingInterfaces"
 import { TagDTO } from "../business/entities/tagInterfaces"
 
 
