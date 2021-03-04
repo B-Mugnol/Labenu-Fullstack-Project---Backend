@@ -6,7 +6,6 @@ import { Verify } from "../business/services/verify"
 import { TagDTO } from "../business/entities/tagInterfaces"
 
 
-
 export class TagModel {
 
     // Transforms a tag + generated id into TagDTO
@@ -19,5 +18,5 @@ export class TagModel {
             tag
         }
     }
-    
+
 }
