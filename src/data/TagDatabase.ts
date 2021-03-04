@@ -44,7 +44,7 @@ export class TagDatabase extends BaseDatabase {
             const result: any = this.connection.raw(`
                 SELECT * FROM ${this.tableNames.tags}
                 WHERE
-                    tag = ${tag}
+                    tag = "${tag}"
                 ;
             `)
 
