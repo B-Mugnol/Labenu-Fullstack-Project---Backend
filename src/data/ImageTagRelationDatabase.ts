@@ -6,7 +6,7 @@ import { BaseDatabase } from "./BaseDatabase"
 import { ImageTagRelationDTO } from "../business/entities/imageTagRelationInterfaces"
 
 
-export class imageTagRelationDatabase extends BaseDatabase {
+export class ImageTagRelationDatabase extends BaseDatabase {
 
     public create = async ({
         image_id,
