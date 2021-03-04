@@ -11,7 +11,7 @@ export class ImageModel {
 
     // Transform ImageInput + generated id into ImageDTO
     static readonly inputToImageDTO = (input: ImageInput, id: string, authorId: string, verifier: Verify): ImageDTO => {
-        const validKeys = ["subtitle", "file_path", "file", "collection"]
+        const validKeys = ["subtitle", "file_path", "file", "collection", "tags"]
         const optionalKeys = ["file_path", "file"]
         verifier.objectKeys(input, validKeys, optionalKeys)
 
