@@ -10,7 +10,7 @@ export abstract class BaseDatabase {
 
     protected static _connection: Knex | null = null
 
-    protected tableNames = {
+    protected readonly tableNames = {
         images: "Images_LFSP",
         imageTagRelation: "Image_Tag_Relation_LFSP",
         tags: "Tags_LFSP",
