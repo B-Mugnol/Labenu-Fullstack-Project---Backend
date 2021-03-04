@@ -15,20 +15,31 @@ export class Verify {
     }
 
 
-    public length = (key: string, keyName: string, minLength: number) => {
+    public length = (key: string, keyName: string, minLength: number): void => {
         if (key.length < minLength) {
             throw new InvalidInputError(`${keyName} has insufficient length. Mininum length is ${minLength}.`)
         }
     }
 
 
-    public email = (email: string) => {
+    public email = (email: string): void => {
         const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
         const isEmail = emailRegExp.test(email)
 
         if (!isEmail) {
             throw new InvalidInputError("Invalid email.")
+        }
+    }
+
+
+    public hashtag = (tag: string): void => {
+        const tagRegExp = /(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/
+
+        const isTag = tagRegExp.test(tag)
+
+        if (!isTag) {
+            throw new InvalidInputError("Invalid tag.")
         }
     }
 
