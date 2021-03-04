@@ -40,7 +40,7 @@ export class ImageDatabase extends BaseDatabase {
         userId: string,
         perPage?: number,
         pageNumber?: number
-    ): Promise<ImageDTO> => {
+    ): Promise<ImageDTO[]> => {
         try {
             const result: any = await this.connection.raw(`
                 SELECT * FROM ${this.tableNames.images}
@@ -51,7 +51,6 @@ export class ImageDatabase extends BaseDatabase {
                         "OFFSET " + pageNumber ? 5 * (pageNumber! - 1) : 1
                     :
                     "LIMIT 1000"
-
                 }
                 ;
             `)
