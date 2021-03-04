@@ -18,7 +18,7 @@ export class UserController {
     ) { }
 
 
-    public signup = async (req: Request, res: Response): Promise<void> => {
+    public readonly signup = async (req: Request, res: Response): Promise<void> => {
         try {
             const input: UserInput = UserModel.anyToUserInput(req.body, new Verify())
 
