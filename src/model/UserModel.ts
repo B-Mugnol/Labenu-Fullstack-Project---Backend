@@ -9,7 +9,7 @@ import { UserDTO, UserInput } from "../business/entities/userInterfaces"
 export class UserModel {
 
     // Transform UserInput + generated id into UserDTO.
-    static inputToUserDTO = (user: UserInput, id: string): UserDTO => {
+    static readonly inputToUserDTO = (user: UserInput, id: string): UserDTO => {
         const { name, nickname, email, password, avatar } = user
         return {
             id,
@@ -23,7 +23,7 @@ export class UserModel {
 
 
     // Attempt to create an UserInput, throws error if not possible
-    static anyToUserInput = (user: any, verify: Verify): UserInput => {
+    static readonly anyToUserInput = (user: any, verify: Verify): UserInput => {
         const validKeys = ["name", "nickname", "email", "password", "avatar"]
         verify.objectKeys(user, validKeys)
 
