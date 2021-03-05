@@ -5,6 +5,7 @@ import { TagDatabase } from "../data/TagDatabase"
 
 
 // Services
+import { ErrorHandler } from "./services/errorHandler"
 import { IdManager } from "./services/idManager"
 import { TokenManager } from "./services/tokenManager"
 import { Verify } from "./services/verify"
@@ -19,7 +20,6 @@ import { ImageModel } from "../model/ImageModel"
 
 // Error
 import { UnauthorizedError } from "../error/UnauthorizedError"
-import { InvalidInputError } from "../error/InvalidInputError"
 
 
 export class ImageBusiness {
@@ -29,7 +29,8 @@ export class ImageBusiness {
         private tagDatabase: TagDatabase,
         private idManager: IdManager,
         private tokenManager: TokenManager,
-        private verifier: Verify
+        private verifier: Verify,
+        private errorHandler: ErrorHandler
     ) { }
 
 
@@ -75,14 +76,7 @@ export class ImageBusiness {
             })
 
         } catch (error) {
-            switch (error.code) {
-                case 417:
-                    throw new InvalidInputError(error.message)
-                case 401:
-                    throw new UnauthorizedError(error.message)
-                default:
-                    throw new Error(error.message)
-            }
+            this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
 }
