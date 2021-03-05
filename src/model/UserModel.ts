@@ -23,7 +23,7 @@ export class UserModel {
 
 
     // Attempt to create an UserInput, throws error if not possible
-    static readonly anyToUserInput = (user: any, verifier: Verify): UserInput => {
+    static readonly anyToUserInput = (user: any): UserInput => {
         const { name, nickname, email, password, avatar } = user
 
         return {

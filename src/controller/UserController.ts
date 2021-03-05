@@ -25,7 +25,7 @@ export class UserController {
             
             this.verifier.string(req.body) // Verifies if all fields are of the correct type: string
             
-            const input: UserInput = UserModel.anyToUserInput(req.body, new Verify())
+            const input: UserInput = UserModel.anyToUserInput(req.body)
 
             const accessData = await this.userBusiness.createUser(input)
 
