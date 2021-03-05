@@ -5,7 +5,6 @@ import { Request, Response } from "express"
 import { UserBusiness } from "../business/UserBusiness"
 
 
-
 // Model and Entities
 import { UserInput } from "../business/entities/userInterfaces"
 import { UserModel } from "../model/UserModel"
