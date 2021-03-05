@@ -36,10 +36,10 @@ export class UserDatabase extends BaseDatabase {
 
     public readonly getByEmail = async (email: string): Promise<UserDTO | undefined> => {
         try {
-            const result: any = this.connection.raw(`
+            const result: any = await this.connection.raw(`
                 SELECT * FROM ${this.tableNames.users}
                 WHERE
-                    email = ${email}
+                    email = "${email}"
                 ;
             `)
 
