@@ -5,6 +5,7 @@ import { AddressInfo } from "net"
 
 
 // Routes
+import { imageRouter } from "./controller/routes/imageRouter"
 import { userRouter } from "./controller/routes/userRouter"
 
 
@@ -17,6 +18,7 @@ app.use(cors())
 
 // Application endpoints
 app.use("/user", userRouter)
+app.use("/image", imageRouter)
 
 
 // Server
