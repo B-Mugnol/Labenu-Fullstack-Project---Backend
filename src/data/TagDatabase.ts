@@ -41,14 +41,14 @@ export class TagDatabase extends BaseDatabase {
 
     public getByTag = async (tag: string): Promise<TagDTO> => {
         try {
-            const result: any = this.connection.raw(`
+            const result: any = await this.connection.raw(`
                 SELECT * FROM ${this.tableNames.tags}
                 WHERE
-                    tag = "${tag}"
+                    tag LIKE "${tag}"
                 ;
             `)
 
-            return result[0]
+            return result[0][0]
 
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
