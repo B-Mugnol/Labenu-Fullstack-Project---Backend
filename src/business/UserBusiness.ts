@@ -14,6 +14,10 @@ import { UserModel } from "../model/UserModel"
 import { UserInput } from "./entities/userInterfaces"
 import { AccessData } from "./entities/authorization"
 
+
+// Errors
+import { InvalidInputError } from "../error/InvalidInputError"
+
 export class UserBusiness {
     constructor(
         private userDatabase: UserDatabase,
@@ -24,28 +28,38 @@ export class UserBusiness {
     ) { }
 
     public createUser = async (user: UserInput): Promise<AccessData> => {
-        // Validations (empty field validation done in Controller layer):
-        this.verifier.email(user.email) // Throws error if not an email
-        this.verifier.length(user.password, "Password", 7) // Verifies password length >= 7
+        try {
+            // Validations (empty field validation done in Controller layer):
+            this.verifier.email(user.email) // Throws error if not an email
+            this.verifier.length(user.password, "Password", 7) // Verifies password length >= 7
 
 
-        const userId: string = this.idManager.generate()
-        const hashedPassword: string = await this.hashManager.generate(user.password)
+            const userId: string = this.idManager.generate()
+            const hashedPassword: string = await this.hashManager.generate(user.password)
 
-        await this.userDatabase.create(
-            UserModel.inputToUserDTO(
-                {
-                    ...user,
-                    password: hashedPassword
-                },
-                userId))
+            await this.userDatabase.create(
+                UserModel.inputToUserDTO(
+                    {
+                        ...user,
+                        password: hashedPassword
+                    },
+                    userId))
 
 
-        const accessData: AccessData = {
-            id: userId,
-            token: this.tokenManager.generate({ id: userId })
+            const accessData: AccessData = {
+                id: userId,
+                token: this.tokenManager.generate({ id: userId })
+            }
+
+            return accessData
+        } catch (error) {
+            switch (error.code) {
+                case 417:
+                    throw new InvalidInputError(error.message)
+                default:
+                    throw new Error(error.message)
+            }
         }
-
-        return accessData
     }
+
 }
