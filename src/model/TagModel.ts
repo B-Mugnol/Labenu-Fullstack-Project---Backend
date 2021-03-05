@@ -1,7 +1,3 @@
-// Services
-import { Verify } from "../business/services/verify"
-
-
 // Entities
 import { TagDTO } from "../business/entities/tagInterfaces"
 
@@ -9,14 +5,10 @@ import { TagDTO } from "../business/entities/tagInterfaces"
 export class TagModel {
 
     // Transforms a tag + generated id into TagDTO
-    static readonly tagToTagDTO = (tag: string, id: string, verifier: Verify): TagDTO => {
-        verifier.string(tag)
-        verifier.hashtag(tag)
-
+    static readonly tagToTagDTO = (tag: string, id: string): TagDTO => {
         return {
             id,
             tag
         }
     }
-
 }
