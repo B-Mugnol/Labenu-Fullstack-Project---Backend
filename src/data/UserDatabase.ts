@@ -43,7 +43,7 @@ export class UserDatabase extends BaseDatabase {
                 ;
             `)
 
-            return result[0]
+            return result[0][0]
 
         } catch (error) {
             throw new Error(error.sqlMessage || error.message)
