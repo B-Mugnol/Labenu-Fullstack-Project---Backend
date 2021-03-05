@@ -13,12 +13,18 @@ import { Verify } from "../business/services/verify"
 
 export class UserController {
     constructor(
-        private userBusiness: UserBusiness
+        private userBusiness: UserBusiness,
+        private verifier: Verify
     ) { }
 
 
     public readonly signup = async (req: Request, res: Response): Promise<void> => {
         try {
+            const validKeys = ["name", "nickname", "email", "password", "avatar"]
+            this.verifier.objectKeys(req.body, validKeys)
+            
+            this.verifier.string(req.body) // Verifies if all fields are of the correct type: string
+            
             const input: UserInput = UserModel.anyToUserInput(req.body, new Verify())
 
             const accessData = await this.userBusiness.createUser(input)
