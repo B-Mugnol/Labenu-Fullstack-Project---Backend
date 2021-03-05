@@ -13,6 +13,7 @@ import { HashManager } from "../../business/services/hashManager"
 import { IdManager } from "../../business/services/idManager"
 import { TokenManager } from "../../business/services/tokenManager"
 import { Verify } from "../../business/services/verify"
+import { ErrorHandler } from "../../business/services/errorHandler"
 
 
 export const userRouter = express.Router()
@@ -22,7 +23,8 @@ const userBusiness = new UserBusiness(
     new IdManager,
     new HashManager,
     new TokenManager,
-    new Verify
+    new Verify,
+    new ErrorHandler
 )
 
 userRouter.post(
