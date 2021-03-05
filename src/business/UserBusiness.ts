@@ -27,7 +27,7 @@ export class UserBusiness {
         private verifier: Verify
     ) { }
 
-    public createUser = async (user: UserInput): Promise<AccessData> => {
+    public readonly createUser = async (user: UserInput): Promise<AccessData> => {
         try {
             // Validations (empty field validation done in Controller layer):
             this.verifier.email(user.email) // Throws error if not an email
@@ -61,5 +61,8 @@ export class UserBusiness {
             }
         }
     }
+
+
+    public readonly
 
 }

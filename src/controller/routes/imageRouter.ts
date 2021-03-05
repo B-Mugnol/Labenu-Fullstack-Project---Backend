@@ -20,6 +20,7 @@ import { TagDatabase } from "../../data/TagDatabase"
 import { IdManager } from "../../business/services/idManager"
 import { TokenManager } from "../../business/services/tokenManager"
 import { Verify } from "../../business/services/verify"
+import { ErrorHandler } from "../../business/services/errorHandler"
 
 
 export const imageRouter = express.Router()
@@ -30,7 +31,8 @@ const imageBusiness = new ImageBusiness(
     new TagDatabase,
     new IdManager,
     new TokenManager,
-    new Verify
+    new Verify,
+    new ErrorHandler
 )
 
 imageRouter.post(
