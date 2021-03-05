@@ -27,8 +27,17 @@ const userBusiness = new UserBusiness(
     new ErrorHandler
 )
 
+const userController = new UserController(
+    userBusiness,
+    new Verify)
+
+
 userRouter.post(
     "/signup",
-    new UserController(userBusiness, new Verify)
-        .signup
+    userController.signup
+)
+
+userRouter.post(
+    "/login",
+    userController.login
 )
