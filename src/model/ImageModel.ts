@@ -1,3 +1,7 @@
+// External libraries
+import dayjs from "dayjs"
+
+
 // Services
 import { Verify } from "../business/services/verify"
 
@@ -7,27 +11,44 @@ import { ImageInput } from "../business/entities/couplingInterfaces"
 import { ImageDTO } from "../business/entities/imageInterfaces"
 
 
+// Error
+import { InvalidInputError } from "../error/InvalidInputError"
+
+
 export class ImageModel {
 
     // Transform ImageInput + generated id into ImageDTO
-    static readonly inputToImageDTO = (input: ImageInput, id: string, authorId: string, verifier: Verify): ImageDTO => {
-        const validKeys = ["subtitle", "file_path", "file", "collection", "tags"]
-        const optionalKeys = ["file_path", "file"]
-        verifier.objectKeys(input, validKeys, optionalKeys)
-
+    static readonly inputToImageDTO = (input: ImageInput, id: string, authorId: string): ImageDTO => {
         const { subtitle, file_path, file, collection } = input
-
-        verifier.string({ subtitle, file_path, collection })
 
         return {
             id,
             subtitle,
-            creation_date: new Date().getTime(),
+            creation_date: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
             file_path,
             file,
             collection,
             author_id: authorId
         }
+    }
+
+
+    static readonly anyToImageInput = (image: any): ImageInput => {
+        try {
+            const { subtitle, file_path, file, collection, tags } = image
+
+            return {
+                subtitle,
+                file_path,
+                file,
+                collection,
+                tags
+            }
+
+        } catch (error) {
+            throw new InvalidInputError(error.message)
+        }
+
     }
 
 }
