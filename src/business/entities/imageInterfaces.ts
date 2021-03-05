@@ -1,7 +1,7 @@
 export interface ImageDTO {
     id: string,
     subtitle: string,
-    creation_date: number,
+    creation_date: string,
     file_path: string | null,
     file: Blob | null,
     collection: string,
