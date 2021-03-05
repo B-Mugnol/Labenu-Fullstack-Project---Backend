@@ -3,6 +3,7 @@ import { UserDatabase } from "../data/UserDatabase"
 
 
 // Services
+import { ErrorHandler } from "./services/errorHandler"
 import { HashManager } from "./services/hashManager"
 import { IdManager } from "./services/idManager"
 import { TokenManager } from "./services/tokenManager"
@@ -11,12 +12,14 @@ import { Verify } from "./services/verify"
 
 // Models and Entities
 import { UserModel } from "../model/UserModel"
-import { UserInput } from "./entities/userInterfaces"
+import { UserDTO, UserInput } from "./entities/userInterfaces"
 import { AccessData } from "./entities/authorization"
 
 
 // Errors
 import { InvalidInputError } from "../error/InvalidInputError"
+import { NotFoundError } from "../error/NotFoundError"
+import { UnauthorizedError } from "../error/UnauthorizedError"
 
 export class UserBusiness {
     constructor(
@@ -24,10 +27,11 @@ export class UserBusiness {
         private idManager: IdManager,
         private hashManager: HashManager,
         private tokenManager: TokenManager,
-        private verifier: Verify
+        private verifier: Verify,
+        private errorHandler: ErrorHandler
     ) { }
 
-    public readonly createUser = async (user: UserInput): Promise<AccessData> => {
+    public readonly createUser = async (user: UserInput): Promise<AccessData | void> => {
         try {
             // Validations (empty field validation done in Controller layer):
             this.verifier.email(user.email) // Throws error if not an email
@@ -53,16 +57,33 @@ export class UserBusiness {
 
             return accessData
         } catch (error) {
-            switch (error.code) {
-                case 417:
-                    throw new InvalidInputError(error.message)
-                default:
-                    throw new Error(error.message)
-            }
+            this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
 
 
-    public readonly
+    public readonly login = async (email: string, password: string): Promise<AccessData | void> => {
+        try {
+            const databaseUser: UserDTO | undefined = await this.userDatabase.getByEmail(email)
+
+            if (!databaseUser) {
+                throw new NotFoundError("Email does not exist.")
+            }
+
+            if (await this.hashManager.compare(password, databaseUser.password)) {
+                throw new UnauthorizedError("Wrong password. Passwords are case-sensitive")
+            }
+
+            return {
+                id: databaseUser.id,
+                token: this.tokenManager.generate({ 
+                    id: databaseUser.id 
+                })
+            }
+
+        } catch (error) {
+            this.errorHandler.throwCustomError(error.code, error.message)
+        }
+    }
 
 }
