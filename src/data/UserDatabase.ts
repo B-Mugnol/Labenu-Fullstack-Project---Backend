@@ -8,7 +8,7 @@ import { UserDTO } from "../business/entities/userInterfaces"
 
 export class UserDatabase extends BaseDatabase {
     
-    public create = async ({
+    public readonly create = async ({
         id,
         name,
         nickname,
@@ -34,7 +34,7 @@ export class UserDatabase extends BaseDatabase {
     }
 
 
-    public getByEmail = async (email: string): Promise<UserDTO | undefined> => {
+    public readonly getByEmail = async (email: string): Promise<UserDTO | undefined> => {
         try {
             const result: any = this.connection.raw(`
                 SELECT * FROM ${this.tableNames.users}
