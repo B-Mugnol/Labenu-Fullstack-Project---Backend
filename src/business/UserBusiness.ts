@@ -70,8 +70,8 @@ export class UserBusiness {
                 throw new NotFoundError("Email does not exist.")
             }
 
-            if (await this.hashManager.compare(password, databaseUser.password)) {
-                throw new UnauthorizedError("Wrong password. Passwords are case-sensitive")
+            if (!await this.hashManager.compare(password, databaseUser.password)) {
+                throw new UnauthorizedError("Wrong password.")
             }
 
             return {
