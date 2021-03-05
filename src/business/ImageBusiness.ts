@@ -17,6 +17,11 @@ import { AuthenticationData } from "./entities/authorization"
 import { ImageModel } from "../model/ImageModel"
 
 
+// Error
+import { UnauthorizedError } from "../error/UnauthorizedError"
+import { InvalidInputError } from "../error/InvalidInputError"
+
+
 export class ImageBusiness {
     constructor(
         private imageDatabase: ImageDatabase,
@@ -28,28 +33,56 @@ export class ImageBusiness {
     ) { }
 
 
-    public readonly create = async (image: ImageInput, token: string): Promise<void> => {
+    public readonly create = async (image: ImageInput, token: string | undefined): Promise<void> => {
 
-        const imageId: string = this.idManager.generate()
-        const creatorData: AuthenticationData = this.tokenManager.tokenData(token)
+        try {
+            if (!token) {
+                throw new UnauthorizedError("No token found.")
+            }
 
-        await this.imageDatabase.create(
-            ImageModel.inputToImageDTO(
-                image, imageId, creatorData.id, this.verifier
-            )
-        )
+            const { subtitle, file_path, collection } = image
+            this.verifier.string({ subtitle, file_path, collection })
 
-        image.tags.forEach(async tag => {
-            const tagObject = TagModel.tagToTagDTO(tag,
-                this.idManager.generate(),
-                this.verifier)
+            const imageId: string = this.idManager.generate()
+            const creatorData: AuthenticationData = this.tokenManager.tokenData(token)
 
-            const tagInfo = await this.tagDatabase.create(tagObject)
-
-            await this.relationDatabase.create({
-                image_id: imageId,
-                tag_id: tagInfo.id
+            image.tags.forEach(tag => {
+                this.verifier.string(tag)
+                this.verifier.hashtag(tag)
             })
-        })
+
+            await this.imageDatabase.create(
+                ImageModel.inputToImageDTO(
+                    image, imageId, creatorData.id
+                )
+            )
+
+            image.tags.forEach(async tag => {
+                try {
+                    const tagObject = TagModel.tagToTagDTO(tag,
+                        this.idManager.generate()
+                    )
+
+                    const tagInfo = await this.tagDatabase.create(tagObject)
+
+                    await this.relationDatabase.create({
+                        image_id: imageId,
+                        tag_id: tagInfo.id
+                    })
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            })
+
+        } catch (error) {
+            switch (error.code) {
+                case 417:
+                    throw new InvalidInputError(error.message)
+                case 401:
+                    throw new UnauthorizedError(error.message)
+                default:
+                    throw new Error(error.message)
+            }
+        }
     }
 }
