@@ -2,10 +2,6 @@
 import dayjs from "dayjs"
 
 
-// Services
-import { Verify } from "../business/services/verify"
-
-
 // Entities
 import { ImageInput } from "../business/entities/couplingInterfaces"
 import { ImageDTO } from "../business/entities/imageInterfaces"
