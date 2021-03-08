@@ -57,6 +57,16 @@ export class UserBusiness {
 
             return accessData
         } catch (error) {
+            if (
+                error.message.includes("Duplicate")
+                && error.message.includes("email")) {
+                throw new InvalidInputError("Email already in use.")
+            } else if (
+                error.message.includes("Duplicate")
+                && error.message.includes("nickname")) {
+                throw new InvalidInputError("Nickname already in use.")
+            }
+
             this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
@@ -76,8 +86,8 @@ export class UserBusiness {
 
             return {
                 id: databaseUser.id,
-                token: this.tokenManager.generate({ 
-                    id: databaseUser.id 
+                token: this.tokenManager.generate({
+                    id: databaseUser.id
                 })
             }
 
