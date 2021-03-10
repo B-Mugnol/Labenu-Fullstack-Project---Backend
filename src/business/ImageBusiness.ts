@@ -1,4 +1,5 @@
 // Databases
+import { CouplingDatabase } from "../data/CouplingDatabase"
 import { ImageDatabase } from "../data/ImageDatabase"
 import { ImageTagRelationDatabase } from "../data/ImageTagRelationDatabase"
 import { TagDatabase } from "../data/TagDatabase"
@@ -24,13 +25,14 @@ import { UnauthorizedError } from "../error/UnauthorizedError"
 
 export class ImageBusiness {
     constructor(
+        private couplingDatabase: CouplingDatabase,
         private imageDatabase: ImageDatabase,
         private relationDatabase: ImageTagRelationDatabase,
         private tagDatabase: TagDatabase,
+        private errorHandler: ErrorHandler,
         private idManager: IdManager,
         private tokenManager: TokenManager,
-        private verifier: Verify,
-        private errorHandler: ErrorHandler
+        private verifier: Verify
     ) { }
 
 
@@ -87,8 +89,10 @@ export class ImageBusiness {
             if (!token) {
                 throw new UnauthorizedError("No token found.")
             }
-            
+
             const userData = this.tokenManager.tokenData(token)
+
+            // const userImages = await 
 
 
         } catch (error) {
