@@ -12,7 +12,7 @@ import { Verify } from "./services/verify"
 
 
 // Models and Entities
-import { ImageInput } from "./entities/couplingInterfaces"
+import { allImageInfoDTO, ImageInput } from "./entities/couplingInterfaces"
 import { TagModel } from "../model/TagModel"
 import { AuthenticationData } from "./entities/authorization"
 import { ImageModel } from "../model/ImageModel"
@@ -74,6 +74,22 @@ export class ImageBusiness {
                     throw new Error(error.message)
                 }
             })
+
+        } catch (error) {
+            this.errorHandler.throwCustomError(error.code, error.message)
+        }
+    }
+
+
+    public readonly getByUser = (token: string, perPage?: number,
+        pageNumber?: number): Promise<allImageInfoDTO[]> => {
+        try {
+            if (!token) {
+                throw new UnauthorizedError("No token found.")
+            }
+            
+            const userData = this.tokenManager.tokenData(token)
+
 
         } catch (error) {
             this.errorHandler.throwCustomError(error.code, error.message)
