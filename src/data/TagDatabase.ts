@@ -8,7 +8,7 @@ import { TagDTO } from "../business/entities/tagInterfaces"
 
 export class TagDatabase extends BaseDatabase {
 
-    public create = async ({
+    public readonly create = async ({
         id,
         tag
     }: TagDTO): Promise<TagDTO> => {
@@ -39,7 +39,7 @@ export class TagDatabase extends BaseDatabase {
     }
 
 
-    public getByTag = async (tag: string): Promise<TagDTO> => {
+    public readonly getByTag = async (tag: string): Promise<TagDTO> => {
         try {
             const result: any = await this.connection.raw(`
                 SELECT * FROM ${this.tableNames.tags}
@@ -54,4 +54,7 @@ export class TagDatabase extends BaseDatabase {
             throw new Error(error.sqlMessage || error.message)
         }
     }
+
+
+
 }
