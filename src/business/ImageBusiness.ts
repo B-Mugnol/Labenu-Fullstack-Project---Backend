@@ -83,8 +83,8 @@ export class ImageBusiness {
     }
 
 
-    public readonly getByUser = (token: string, perPage?: number,
-        pageNumber?: number): Promise<allImageInfoDTO[]> => {
+    public readonly getByUser = async (token: string, perPage?: number,
+        pageNumber?: number): Promise<allImageInfoDTO[] | void> => {
         try {
             if (!token) {
                 throw new UnauthorizedError("No token found.")
@@ -92,8 +92,9 @@ export class ImageBusiness {
 
             const userData = this.tokenManager.tokenData(token)
 
-            // const userImages = await 
+            const userImages = await this.couplingDatabase.getImagesByUserId(userData.id, perPage, pageNumber)
 
+            return userImages
 
         } catch (error) {
             this.errorHandler.throwCustomError(error.code, error.message)
