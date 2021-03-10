@@ -48,7 +48,7 @@ export class ImageDatabase extends BaseDatabase {
                     author_id = "${userId}"
                 ${perPage ?
                     "LIMIT " + perPage + "\n" +
-                        "OFFSET " + pageNumber ? 5 * (pageNumber! - 1) : 1
+                    "OFFSET " + (pageNumber ? perPage * (pageNumber! - 1) : 1)
                     :
                     "LIMIT 1000"
                 }
