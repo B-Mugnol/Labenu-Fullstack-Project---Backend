@@ -3,6 +3,7 @@ import { CouplingDatabase } from "../data/CouplingDatabase"
 import { ImageDatabase } from "../data/ImageDatabase"
 import { ImageTagRelationDatabase } from "../data/ImageTagRelationDatabase"
 import { TagDatabase } from "../data/TagDatabase"
+import { UserDatabase } from "../data/UserDatabase"
 
 
 // Services
@@ -29,6 +30,7 @@ export class ImageBusiness {
         private imageDatabase: ImageDatabase,
         private relationDatabase: ImageTagRelationDatabase,
         private tagDatabase: TagDatabase,
+        private userDatabase: UserDatabase,
         private errorHandler: ErrorHandler,
         private idManager: IdManager,
         private tokenManager: TokenManager,
@@ -83,8 +85,11 @@ export class ImageBusiness {
     }
 
 
-    public readonly getByUser = async (token: string, perPage?: number,
-        pageNumber?: number): Promise<allImageInfoDTO[] | void> => {
+    public readonly getByUser = async (
+        token: string | undefined,
+        userId: string | undefined,
+        perPage?: string,
+        pageNumber?: string): Promise<allImageInfoDTO[] | void> => {
         try {
             if (!token) {
                 throw new UnauthorizedError("No token found.")
@@ -92,12 +97,48 @@ export class ImageBusiness {
 
             const userData = this.tokenManager.tokenData(token)
 
-            const userImages = await this.couplingDatabase.getImagesByUserId(userData.id, perPage, pageNumber)
+            let businessPerPage: number | undefined = undefined
+            let businessPageNumber: number | undefined = undefined
 
-            return userImages
+            if (!isNaN(Number(perPage))) {
+                businessPerPage = Number(perPage)
+            }
+            if (!isNaN(Number(pageNumber))) {
+                businessPageNumber = Number(pageNumber)
+            }
+
+            let id: string = ""
+            if (userId) { id = userId }
+            else id = userData.id
+
+            const userImages = await this.imageDatabase.getUntaggedImagesByUserId(
+                id,
+                businessPerPage,
+                businessPageNumber
+            )
+
+            if (!userImages.length) {
+                return []
+            }
+
+            const taggedUserImages: Promise<allImageInfoDTO>[] = userImages.map(async (image) => {
+                try {
+                    const tagInfoArray = await this.couplingDatabase.getTagsFromImageId(image.id)
+
+                    const tags: string[] = tagInfoArray.map(tag => tag.tag)
+
+                    return { ...image, tags }
+
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            })
+
+            return Promise.all(taggedUserImages)
 
         } catch (error) {
             this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
+    
 }
