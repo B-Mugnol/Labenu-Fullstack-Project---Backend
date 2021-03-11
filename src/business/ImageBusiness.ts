@@ -109,7 +109,7 @@ export class ImageBusiness {
 
             let id: string = ""
             if (userId) { id = userId }
-            else id = userData.id
+            else { id = userData.id }
 
             const userImages = await this.imageDatabase.getUntaggedImagesByUserId(
                 id,
@@ -140,5 +140,5 @@ export class ImageBusiness {
             this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
-    
+
 }
