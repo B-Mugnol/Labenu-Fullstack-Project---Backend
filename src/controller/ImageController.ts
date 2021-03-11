@@ -42,4 +42,28 @@ export class ImageController {
             res.status(error.code || 400).send(error.message || error.sqlMessage)
         }
     }
+
+
+    public readonly getAllImagesByUser = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const token = req.headers.authorization
+
+            const { id: userId } = req.params
+
+            const { perPage, pageNumber } = req.query
+
+            const result = await this.imageBusiness.getByUser(
+                token,
+                userId,
+                perPage as string | undefined,
+                pageNumber as string | undefined)
+
+            res.status(200).send({
+                images: result
+            })
+
+        } catch (error) {
+            res.status(error.code || 400).send(error.message || error.sqlMessage)
+        }
+    }
 }
