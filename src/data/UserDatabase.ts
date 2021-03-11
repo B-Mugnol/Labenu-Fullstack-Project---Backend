@@ -7,7 +7,7 @@ import { UserDTO } from "../business/entities/userInterfaces"
 
 
 export class UserDatabase extends BaseDatabase {
-    
+
     public readonly create = async ({
         id,
         name,
@@ -50,4 +50,20 @@ export class UserDatabase extends BaseDatabase {
         }
     }
 
+
+    public readonly getById = async (userId: string): Promise<UserDTO | undefined> => {
+        try {
+            const result: any = await this.connection.raw(`
+                SELECT * FROM ${this.tableNames.users}
+                WHERE
+                    id = "${userId}"
+                ;
+            `)
+
+            return result[0][0]
+
+        } catch (error) {
+            throw new Error(error.sqlMessage || error.message)
+        }
+    }
 }
