@@ -15,13 +15,15 @@ import { Verify } from "./services/verify"
 
 // Models and Entities
 import { allImageInfoDTO, ImageInput } from "./entities/couplingInterfaces"
-import { TagModel } from "../model/TagModel"
 import { AuthenticationData } from "./entities/authorization"
 import { ImageModel } from "../model/ImageModel"
+import { TagModel } from "../model/TagModel"
+import { UserDTO } from "./entities/userInterfaces"
 
 
 // Error
 import { UnauthorizedError } from "../error/UnauthorizedError"
+import { NotFoundError } from "../error/NotFoundError"
 
 
 export class ImageBusiness {
@@ -108,8 +110,17 @@ export class ImageBusiness {
             }
 
             let id: string = ""
-            if (userId) { id = userId }
-            else { id = userData.id }
+            if (userId) {
+                id = userId
+                const user: UserDTO | undefined = await this.userDatabase.getById(id)
+
+                if (!user) {
+                    throw new NotFoundError("User not found.")
+                }
+
+            } else {
+                id = userData.id
+            }
 
             const userImages = await this.imageDatabase.getUntaggedImagesByUserId(
                 id,
