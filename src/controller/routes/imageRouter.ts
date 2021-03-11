@@ -27,18 +27,13 @@ import { UserDatabase } from "../../data/UserDatabase"
 
 export const imageRouter = express.Router()
 
-const couplingDatabase = new CouplingDatabase(
-    new UserDatabase,
-    new ImageDatabase,
-    new ImageTagRelationDatabase,
-    new TagDatabase
-)
 
 const imageBusiness = new ImageBusiness(
-    couplingDatabase,
+    new CouplingDatabase,
     new ImageDatabase,
     new ImageTagRelationDatabase,
     new TagDatabase,
+    new UserDatabase,
     new ErrorHandler,
     new IdManager,
     new TokenManager,
@@ -48,4 +43,14 @@ const imageBusiness = new ImageBusiness(
 imageRouter.post(
     "/create",
     new ImageController(imageBusiness, new Verify).create
+)
+
+imageRouter.get(
+    "/",
+    new ImageController(imageBusiness, new Verify).getAllImagesByUser
+)
+
+imageRouter.get(
+    "/:id",
+    new ImageController(imageBusiness, new Verify).getAllImagesByUser
 )
