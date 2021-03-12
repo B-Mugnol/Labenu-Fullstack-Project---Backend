@@ -24,6 +24,7 @@ import { UserDTO } from "./entities/userInterfaces"
 // Error
 import { UnauthorizedError } from "../error/UnauthorizedError"
 import { NotFoundError } from "../error/NotFoundError"
+import { InvalidInputError } from "../error/InvalidInputError"
 
 
 export class ImageBusiness {
@@ -57,6 +58,10 @@ export class ImageBusiness {
                 this.verifier.string(tag)
                 this.verifier.hashtag(tag)
             })
+
+            if (!image.file && !image.file_path) {
+                throw new InvalidInputError("Provide only one of the two: file or file_path.")
+            }
 
             await this.imageDatabase.create(
                 ImageModel.inputToImageDTO(
