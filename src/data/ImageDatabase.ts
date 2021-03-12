@@ -38,20 +38,20 @@ export class ImageDatabase extends BaseDatabase {
 
     public getUntaggedImagesByUserId = async (
         userId: string,
-        perPage?: number,
-        pageNumber?: number
+        perPage: number = 100,
+        pageNumber: number = 1
     ): Promise<ImageDTO[]> => {
         try {
             const result: any = await this.connection.raw(`
                 SELECT * FROM ${this.tableNames.images}
                 WHERE
                     author_id = "${userId}"
-                ${perPage ?
-                    "LIMIT " + perPage + "\n" +
-                    "OFFSET " + (pageNumber ? perPage * (pageNumber! - 1) : 1)
-                    :
-                    "LIMIT 1000"
-                }
+                ORDER BY
+                    creation_date DESC
+                LIMIT
+                    ${perPage}
+                OFFSET
+                    ${perPage * (pageNumber - 1)}
                 ;
             `)
 
