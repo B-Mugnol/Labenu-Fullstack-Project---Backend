@@ -22,9 +22,9 @@ import { UserDTO } from "./entities/userInterfaces"
 
 
 // Error
-import { UnauthorizedError } from "../error/UnauthorizedError"
-import { NotFoundError } from "../error/NotFoundError"
 import { InvalidInputError } from "../error/InvalidInputError"
+import { NotFoundError } from "../error/NotFoundError"
+import { UnauthorizedError } from "../error/UnauthorizedError"
 
 
 export class ImageBusiness {
@@ -156,5 +156,4 @@ export class ImageBusiness {
             this.errorHandler.throwCustomError(error.code, error.message)
         }
     }
-
 }

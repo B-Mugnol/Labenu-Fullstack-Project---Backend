@@ -54,7 +54,4 @@ export class TagDatabase extends BaseDatabase {
             throw new Error(error.sqlMessage || error.message)
         }
     }
-
-
-
 }

@@ -2,7 +2,7 @@
 import * as jwt from "jsonwebtoken"
 
 
-// Interface
+// Entities
 import { AuthenticationData } from '../entities/authorization'
 
 
@@ -24,4 +24,3 @@ export class TokenManager {
         return { id }
     }
 }
-

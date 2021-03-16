@@ -2,11 +2,11 @@
 import { Request, Response } from "express"
 
 
-// Business layer classes and services
+// Business layer classes
 import { ImageBusiness } from "../business/ImageBusiness"
 
 
-// Model and Entities
+// Models and Entities
 import { ImageInput } from "../business/entities/couplingInterfaces"
 import { ImageModel } from "../model/ImageModel"
 

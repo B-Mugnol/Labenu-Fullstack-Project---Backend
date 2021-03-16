@@ -3,8 +3,8 @@ import dayjs from "dayjs"
 
 
 // Entities
-import { ImageInput } from "../business/entities/couplingInterfaces"
 import { ImageDTO } from "../business/entities/imageInterfaces"
+import { ImageInput } from "../business/entities/couplingInterfaces"
 
 
 // Error
@@ -13,7 +13,6 @@ import { InvalidInputError } from "../error/InvalidInputError"
 
 export class ImageModel {
 
-    // Transform ImageInput + generated id into ImageDTO
     static readonly inputToImageDTO = (input: ImageInput, id: string, authorId: string): ImageDTO => {
         const { subtitle, file_path, file, collection } = input
 
@@ -46,5 +45,4 @@ export class ImageModel {
         }
 
     }
-
 }

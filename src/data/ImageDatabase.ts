@@ -8,7 +8,7 @@ import { ImageDTO } from "../business/entities/imageInterfaces"
 
 export class ImageDatabase extends BaseDatabase {
 
-    public create = async ({
+    public readonly create = async ({
         id,
         subtitle,
         creation_date,
@@ -36,7 +36,8 @@ export class ImageDatabase extends BaseDatabase {
         }
     }
 
-    public getUntaggedImagesByUserId = async (
+
+    public readonly getUntaggedImagesByUserId = async (
         userId: string,
         perPage: number = 100,
         pageNumber: number = 1

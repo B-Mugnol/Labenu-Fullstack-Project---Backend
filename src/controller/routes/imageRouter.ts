@@ -11,18 +11,18 @@ import { ImageController } from "../ImageController"
 
 
 // Database
+import { CouplingDatabase } from "../../data/CouplingDatabase"
 import { ImageDatabase } from "../../data/ImageDatabase"
 import { ImageTagRelationDatabase } from "../../data/ImageTagRelationDatabase"
 import { TagDatabase } from "../../data/TagDatabase"
+import { UserDatabase } from "../../data/UserDatabase"
 
 
 // Services
+import { ErrorHandler } from "../../business/services/errorHandler"
 import { IdManager } from "../../business/services/idManager"
 import { TokenManager } from "../../business/services/tokenManager"
 import { Verify } from "../../business/services/verify"
-import { ErrorHandler } from "../../business/services/errorHandler"
-import { CouplingDatabase } from "../../data/CouplingDatabase"
-import { UserDatabase } from "../../data/UserDatabase"
 
 
 export const imageRouter = express.Router()

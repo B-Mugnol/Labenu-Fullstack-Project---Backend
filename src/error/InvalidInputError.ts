@@ -1,4 +1,5 @@
-import { CodedError } from "./CodedError";
+// Abstract class
+import { CodedError } from "./CodedError"
 
 export class InvalidInputError extends CodedError {
     constructor(
